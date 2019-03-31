@@ -1,7 +1,6 @@
 import urllib.request
 import logging
 import threading
-from queue import Queue, Empty
 import argparse
 import time
 import datetime as dt
