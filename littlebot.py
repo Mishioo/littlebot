@@ -98,10 +98,12 @@ def request_address(address, number, master):
     try:
         req = urllib.request.urlopen(request)
     except Exception as e:
-        logging.warning(f'Request no. {number}: {req.status}.')
+        logging.warning(f'Request no. {number}: failed due to error: {e}.')
         return
     if not req.status == 200:
-        logging.warning(f'Request no. {number}: {req.status}.')
+        logging.warning(
+            f'Request no. {number}: failed with status: {req.status}.'
+        )
     else:
         master.successes += 1
         logging.info(f'Request no. {number}: SUCCESS.')
