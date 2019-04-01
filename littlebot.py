@@ -99,6 +99,7 @@ def request_address(address, number, master):
         req = urllib.request.urlopen(request)
     except Exception as e:
         logging.warning(f'Request no. {number}: failed due to error: {e}.')
+        master.threads_alive -= 1
         return
     if not req.status == 200:
         logging.warning(
