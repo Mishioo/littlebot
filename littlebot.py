@@ -120,16 +120,38 @@ def repeat_request(
         req = urllib.request.urlopen(request)
     except Exception as e:
         logging.error(f'Initial request failed due to error: {e}')
-        input('Press enter to exit.')
-        return
-    if not req.status == 200:
+        answer = input(
+            'Would you like to (T)ry again, (C)ontinue anyway or (A)bort?'
+        ).lower()
+        while not answer.startswith(('t', 'c', 'a')):
+            answer = input(
+                f'Did not understand: "{answer}". '
+                f'Would you like to (T)ry again, (C)ontinue anyway or (A)bort?'
+            )
+        if answer.startswith('c'):
+            logging.info("Continuing initialization. Let's bot!")
+            req = None
+        elif answer.startswith('a'):
+            logging.warning("Aborting littlebot initialization.")
+            return
+        else:
+            return repeat_request(
+                address, interval, start_time, finish_time, max_time, max_number
+            )
+    if not req:
+        pass
+    elif not req.status == 200:
         logging.warning(f'Initial request failed with status {req.status}')
         answer = input('Do you wish to continue anyway (Y/N)?').lower()
-        while answer not in 'y n yes no'.split():
+        while not answer.startswith(('y', 'n')):
             answer = input(
-                f'Did not understand: "{answer}".'
+                f'Did not understand: "{answer}". '
                 f'Do you wish to continue (Y/N)?'
             ).lower()
+        if answer.startswith('y'):
+            logging.info("Continuing initialization. Let's bot!")
+        else:
+            return
     else:
         logging.info("Initial request succeeded. Let's bot!")
     stop = threading.Event()
@@ -201,7 +223,9 @@ if __name__ == '__main__':
     logging.info('To force exit press Ctrl+C')
     try:
         while not littlebot.stopped.is_set():
-            time.sleep(1)
+            time.sleep(0.5)
     except KeyboardInterrupt:
         logging.warning(f'Will exit after at most {args.interval} seconds.')
         littlebot.stopped.set()
+    except AttributeError:
+        logging.warning("Initialization failed. Exiting littlebot.")

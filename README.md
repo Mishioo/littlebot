@@ -7,4 +7,4 @@ A little bot, that repetitively searches "bing" in Google, with given time inter
 If you have Python 3 on your machine, only thing you need to do is download a `littlebot.py` script and run it with `python littlebot.py`. You can get more info on usage by running `python littlebot.py --help`. Available options include a site address, a start time, an interval between calls and termination time control.
 ### disclaimer
  
- Please note, that this is a humorous script, written for Prima Aprilis. No harm intended. ;) 
+ Please note, that this is a humorous work, prepared for Aprils Fools Day. No harm intended. ;) 
